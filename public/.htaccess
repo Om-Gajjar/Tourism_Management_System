@@ -1,0 +1,50 @@
+# ==============================================================================
+# Tourism Management System - Public .htaccess
+# Handles routing and security when DocumentRoot points directly to /public
+# ==============================================================================
+
+# Disable directory browsing
+Options -Indexes
+
+# Set default directory index
+DirectoryIndex index.php
+
+# Set default character set
+AddDefaultCharset UTF-8
+
+# Security Headers (if mod_headers is enabled)
+<IfModule mod_headers.c>
+    # Prevent MIME-type sniffing
+    Header set X-Content-Type-Options "nosniff"
+    # Prevent Clickjacking
+    Header set X-Frame-Options "SAMEORIGIN"
+    # XSS Protection
+    Header set X-XSS-Protection "1; mode=block"
+    # Referrer Policy
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# URL Rewriting
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # If the requested file or directory exists, serve it directly
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Otherwise route to index.php
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# Block access to hidden files
+<FilesMatch "^\.">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</FilesMatch>

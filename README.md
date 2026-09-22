@@ -102,9 +102,21 @@ sudo service mysql start
 # Start Apache (for phpMyAdmin)
 sudo service apache2 start
 
-# Start PHP built-in server (development)
-php -S localhost:8000
+# Start PHP built-in server with router (development)
+php -S localhost:8000 router.php
 ```
+
+**Option C: Apache / XAMPP / WAMP**
+
+If you are running on Apache, XAMPP, or WAMP, two `.htaccess` files handle routing automatically — no configuration needed:
+
+- `.htaccess` (root) → Redirects all traffic to `public/` and blocks access to `src/`, `database/`, `logs/`, etc.
+- `public/.htaccess` → Handles clean URL routing and sets security headers inside the web root.
+
+Just point your Apache `DocumentRoot` to either:
+- The **project root folder** and the root `.htaccess` will forward traffic to `public/`, or
+- Directly to the **`public/` subfolder** and `public/.htaccess` handles everything.
+
 
 ### 5. Access Application
 
@@ -121,7 +133,8 @@ tourism-project/
 ├── README.md                # 📖 Main documentation (GitHub landing)
 ├── LICENSE                  # ⚖️ MIT License
 ├── .gitignore               # 🚫 Git ignore rules
-├── router.php               # 🛡️ Built-in server router & security firewall
+├── .htaccess                # 🛡️ Apache root routing (XAMPP/WAMP/shared hosting)
+├── router.php               # 🛡️ PHP CLI server router & security firewall
 ├── start.sh                 # 🚀 Service control script (MariaDB, Apache, PHP)
 ├── public/                  # 🌐 Web Document Root (Exposed to web)
 │   ├── index.php            # Homepage & tour listings
@@ -135,6 +148,7 @@ tourism-project/
 │   ├── package_details.php  # Tour details, reviews & inquiry trigger
 │   ├── css/
 │   │   └── style.css        # Inter design system, badges & drawer styling
+│   ├── .htaccess            # 🛡️ Apache public webroot routing & security headers
 │   └── admin/               # 🔒 Admin Management Panel
 │       ├── index.php        # Admin dashboard & package manager
 │       ├── login.php        # Standalone admin login with rate limiting

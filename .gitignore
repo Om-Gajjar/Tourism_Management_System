@@ -1,0 +1,41 @@
+# Tourism Management System - .gitignore
+
+# Environment & Sensitive Configs
+*.env
+.env.local
+.env.*.local
+
+# Server Logs
+logs/*.log
+*.log
+error_log
+php_errors.log
+!logs/.gitkeep
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDEs and Code Editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# Temporary & Cache Files
+/tmp/
+/var/cache/
+*.bak
+*.orig
+
+# Composer & Dependencies (if added in future)
+vendor/
+node_modules/
+
+# Test Outputs
+coverage/
+.phpunit.result.cache

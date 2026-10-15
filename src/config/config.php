@@ -5,32 +5,34 @@
  */
 
 // Application Settings
-define('APP_NAME', 'Tourism MS');
+define('APP_NAME', getenv('APP_NAME') ?: 'Tourism MS');
 define('APP_VERSION', '1.2.0');
-define('APP_URL', 'http://localhost:8000');
+define('APP_URL', getenv('APP_URL') ?: 'http://localhost:8000');
 
 // Database Configuration
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'tourism_db');
-define('DB_USER', 'tourism_user');
-define('DB_PASS', 'password');
+define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+define('DB_PORT', getenv('DB_PORT') ?: '3306');
+define('DB_NAME', getenv('DB_NAME') ?: 'tourism_db');
+define('DB_USER', getenv('DB_USER') ?: 'tourism_user');
+define('DB_PASS', getenv('DB_PASS') ?: 'password');
 define('DB_CHARSET', 'utf8mb4');
 
-// Security Settings
+// Admin Credentials
+define('ADMIN_USERNAME', getenv('ADMIN_USERNAME') ?: 'admin');
+define('ADMIN_PASSWORD', getenv('ADMIN_PASSWORD') ?: 'admin123');
+
+// Session & Security Settings
 define('SESSION_LIFETIME', 7200); // 2 hours
-define('PASSWORD_MIN_LENGTH', 6);
+define('PASSWORD_MIN_LENGTH', 8);
 define('CSRF_TOKEN_NAME', 'csrf_token');
 
 // Pagination
 define('ITEMS_PER_PAGE', 10);
 
-// Admin Credentials (in production, use database)
-define('ADMIN_USERNAME', 'admin');
-define('ADMIN_PASSWORD', 'admin123'); // Should be hashed in production
+// File Uploads
+define('UPLOAD_DIR', __DIR__ . '/../../public/uploads/');
+define('MAX_FILE_SIZE', 5 * 1024 * 1024); // 5 MB
+define('ALLOWED_EXTENSIONS', ['jpg', 'jpeg', 'png', 'webp']);
 
-// Error Reporting (set to 0 in production)
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-// Timezone
-date_default_timezone_set('UTC');
+// Logging
+define('LOG_PATH', __DIR__ . '/../../logs/app.log');

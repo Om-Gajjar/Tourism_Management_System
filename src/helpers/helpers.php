@@ -92,7 +92,7 @@ function initSession(): void
     if (session_status() === PHP_SESSION_NONE) {
         // Secure session settings
         ini_set('session.cookie_httponly', '1');
-        ini_set('session.cookie_secure', '0'); // Set to 1 if using HTTPS
+        ini_set('session.cookie_secure', APP_URL !== '' && str_starts_with(APP_URL, 'https://') ? '1' : '0');
         ini_set('session.use_strict_mode', '1');
         ini_set('session.cookie_samesite', 'Lax');
         session_set_cookie_params(SESSION_LIFETIME);

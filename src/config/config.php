@@ -7,7 +7,13 @@
 // Application Settings
 define('APP_NAME', getenv('APP_NAME') ?: 'Tourism MS');
 define('APP_VERSION', '1.2.0');
-define('APP_URL', getenv('APP_URL') ?: 'http://localhost:8000');
+$configuredAppUrl = trim((string) getenv('APP_URL'));
+if ($configuredAppUrl === '' && isset($_SERVER['HTTP_HOST'])) {
+    $forwardedProto = $_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '';
+    $scheme = $forwardedProto !== '' ? trim(explode(',', $forwardedProto)[0]) : 'http';
+    $configuredAppUrl = $scheme . '://' . $_SERVER['HTTP_HOST'];
+}
+define('APP_URL', rtrim($configuredAppUrl ?: 'http://localhost:8000', '/'));
 
 // Database Configuration
 define('DB_HOST', getenv('DB_HOST') ?: 'localhost');

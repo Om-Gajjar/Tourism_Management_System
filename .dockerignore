@@ -1,0 +1,11 @@
+.git
+.github
+logs/*
+tests
+screenshots
+docs
+.env
+.env.*
+*.log
+Dockerfile
+README.md

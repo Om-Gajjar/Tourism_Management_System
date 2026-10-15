@@ -45,8 +45,9 @@ function getDbConnection() {
         PDO::ATTR_EMULATE_PREPARES   => false,
     ];
 
-    if (DB_HOST !== 'localhost' && DB_HOST !== '127.0.0.1') {
-        $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = false;
+    if (DB_SSL_CA !== '') {
+        $options[PDO::MYSQL_ATTR_SSL_CA] = DB_SSL_CA;
+        $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = DB_SSL_VERIFY;
     }
 
     try {

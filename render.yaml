@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: tourism-management
+    runtime: docker
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: APP_URL
+        sync: false
+      - key: APP_NAME
+        value: Tourism Management System
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASS
+        sync: false
+      - key: DB_SSL_CA
+        value: /etc/ssl/certs/aiven-ca.pem
+      - key: DB_SSL_CA_CONTENT
+        sync: false
+      - key: DB_SSL_VERIFY
+        value: "true"
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false

@@ -16,6 +16,8 @@ define('DB_NAME', getenv('DB_NAME') ?: 'tourism_db');
 define('DB_USER', getenv('DB_USER') ?: 'tourism_user');
 define('DB_PASS', getenv('DB_PASS') ?: 'password');
 define('DB_CHARSET', 'utf8mb4');
+define('DB_SSL_CA', getenv('DB_SSL_CA') ?: '');
+define('DB_SSL_VERIFY', filter_var(getenv('DB_SSL_VERIFY') ?: 'false', FILTER_VALIDATE_BOOLEAN));
 
 // Admin Credentials
 define('ADMIN_USERNAME', getenv('ADMIN_USERNAME') ?: 'admin');

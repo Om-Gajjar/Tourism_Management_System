@@ -126,6 +126,13 @@ Just point your Apache `DocumentRoot` to either:
 | **Admin Panel** | http://localhost:8000/admin/login.php | `admin` / `admin123` |
 | **phpMyAdmin** | http://localhost/phpmyadmin | `tourism_user` / `password` |
 
+## ☁️ Production deployment
+
+For a Render Docker web service backed by Aiven MySQL, follow
+[docs/DEPLOYMENT_RENDER_AIVEN.md](docs/DEPLOYMENT_RENDER_AIVEN.md). It covers
+Aiven TLS, schema import, Render environment variables, health checks, and the
+fact that Render's local filesystem is not persistent for uploaded images.
+
 ## 📁 Project Structure
 
 ```

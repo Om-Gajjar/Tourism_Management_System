@@ -6,6 +6,32 @@
 
 require_once __DIR__ . '/../config/config.php';
 
+function initSchemaIfNeeded(PDO $pdo): void
+{
+    $result = $pdo->query("SHOW TABLES LIKE 'packages'");
+    if ($result && $result->rowCount() > 0) {
+        return;
+    }
+
+    $schemaFile = __DIR__ . '/../../database/schema.sql';
+    if (!file_exists($schemaFile)) {
+        throw new \RuntimeException('Database schema file is missing.');
+    }
+
+    $sql = file_get_contents($schemaFile);
+    if ($sql === false) {
+        throw new \RuntimeException('Database schema file could not be read.');
+    }
+
+    $sql = preg_replace('/CREATE\s+DATABASE\s+[^;]+;/i', '', $sql);
+    $sql = preg_replace('/USE\s+[^;]+;/i', '', $sql);
+    if ($sql === null) {
+        throw new \RuntimeException('Database schema could not be prepared.');
+    }
+
+    $pdo->exec($sql);
+}
+
 /**
  * Get a PDO database connection instance
  * @return PDO
@@ -29,6 +55,7 @@ function getDbConnection(): PDO
         
         try {
             $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
+            initSchemaIfNeeded($pdo);
         } catch (\PDOException $e) {
             if (defined('DEBUG') && DEBUG) {
                 throw new \PDOException($e->getMessage(), (int)$e->getCode());

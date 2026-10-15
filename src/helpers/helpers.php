@@ -13,23 +13,37 @@ function initSchemaIfNeeded(PDO $pdo): void
         return;
     }
 
-    $schemaFile = __DIR__ . '/../../database/schema.sql';
-    if (!file_exists($schemaFile)) {
-        throw new \RuntimeException('Database schema file is missing.');
+    $lockResult = $pdo->query("SELECT GET_LOCK('tourism_management_schema_init', 30)");
+    if (!$lockResult || (int) $lockResult->fetchColumn() !== 1) {
+        throw new \RuntimeException('Could not acquire the database schema initialization lock.');
     }
 
-    $sql = file_get_contents($schemaFile);
-    if ($sql === false) {
-        throw new \RuntimeException('Database schema file could not be read.');
-    }
+    try {
+        $result = $pdo->query("SHOW TABLES LIKE 'packages'");
+        if ($result && $result->rowCount() > 0) {
+            return;
+        }
 
-    $sql = preg_replace('/CREATE\s+DATABASE\s+[^;]+;/i', '', $sql);
-    $sql = preg_replace('/USE\s+[^;]+;/i', '', $sql);
-    if ($sql === null) {
-        throw new \RuntimeException('Database schema could not be prepared.');
-    }
+        $schemaFile = __DIR__ . '/../../database/schema.sql';
+        if (!file_exists($schemaFile)) {
+            throw new \RuntimeException('Database schema file is missing.');
+        }
 
-    $pdo->exec($sql);
+        $sql = file_get_contents($schemaFile);
+        if ($sql === false) {
+            throw new \RuntimeException('Database schema file could not be read.');
+        }
+
+        $sql = preg_replace('/CREATE\s+DATABASE\s+[^;]+;/i', '', $sql);
+        $sql = preg_replace('/USE\s+[^;]+;/i', '', $sql);
+        if ($sql === null) {
+            throw new \RuntimeException('Database schema could not be prepared.');
+        }
+
+        $pdo->exec($sql);
+    } finally {
+        $pdo->query("SELECT RELEASE_LOCK('tourism_management_schema_init')");
+    }
 }
 
 /**

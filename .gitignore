@@ -4,6 +4,7 @@
 *.env
 .env.local
 .env.*.local
+/src/config/config.local.php
 
 # Server Logs
 logs/*.log

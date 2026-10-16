@@ -5,9 +5,28 @@
  */
 
 // Application Settings
-define('APP_NAME', getenv('APP_NAME') ?: 'Tourism MS');
+function configValue(string $key, mixed $default = null): mixed
+{
+    $environmentValue = getenv($key);
+    if ($environmentValue !== false && $environmentValue !== '') {
+        return $environmentValue;
+    }
+
+    static $localConfig = null;
+    if ($localConfig === null) {
+        $localConfigFile = __DIR__ . '/config.local.php';
+        $localConfig = file_exists($localConfigFile) ? require $localConfigFile : [];
+        if (!is_array($localConfig)) {
+            throw new RuntimeException('Local configuration must return an array.');
+        }
+    }
+
+    return $localConfig[$key] ?? $default;
+}
+
+define('APP_NAME', configValue('APP_NAME', 'Tourism MS'));
 define('APP_VERSION', '1.2.0');
-$configuredAppUrl = trim((string) getenv('APP_URL'));
+$configuredAppUrl = trim((string) configValue('APP_URL', ''));
 if ($configuredAppUrl === '' && isset($_SERVER['HTTP_HOST'])) {
     $forwardedProto = $_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '';
     $scheme = $forwardedProto !== '' ? trim(explode(',', $forwardedProto)[0]) : 'http';
@@ -16,18 +35,18 @@ if ($configuredAppUrl === '' && isset($_SERVER['HTTP_HOST'])) {
 define('APP_URL', rtrim($configuredAppUrl ?: 'http://localhost:8000', '/'));
 
 // Database Configuration
-define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
-define('DB_PORT', getenv('DB_PORT') ?: '3306');
-define('DB_NAME', getenv('DB_NAME') ?: 'tourism_db');
-define('DB_USER', getenv('DB_USER') ?: 'tourism_user');
-define('DB_PASS', getenv('DB_PASS') ?: 'password');
+define('DB_HOST', configValue('DB_HOST', 'localhost'));
+define('DB_PORT', configValue('DB_PORT', '3306'));
+define('DB_NAME', configValue('DB_NAME', 'tourism_db'));
+define('DB_USER', configValue('DB_USER', 'tourism_user'));
+define('DB_PASS', configValue('DB_PASS', 'password'));
 define('DB_CHARSET', 'utf8mb4');
-define('DB_SSL_CA', getenv('DB_SSL_CA') ?: '');
-define('DB_SSL_VERIFY', filter_var(getenv('DB_SSL_VERIFY') ?: 'false', FILTER_VALIDATE_BOOLEAN));
+define('DB_SSL_CA', configValue('DB_SSL_CA', ''));
+define('DB_SSL_VERIFY', filter_var(configValue('DB_SSL_VERIFY', 'false'), FILTER_VALIDATE_BOOLEAN));
 
 // Admin Credentials
-define('ADMIN_USERNAME', getenv('ADMIN_USERNAME') ?: 'admin');
-define('ADMIN_PASSWORD', getenv('ADMIN_PASSWORD') ?: 'admin123');
+define('ADMIN_USERNAME', configValue('ADMIN_USERNAME', 'admin'));
+define('ADMIN_PASSWORD', configValue('ADMIN_PASSWORD', 'admin123'));
 
 // Session & Security Settings
 define('SESSION_LIFETIME', 7200); // 2 hours

@@ -1,0 +1,26 @@
+<?php
+
+/*
+ * Copy this file to config.local.php only on a shared host such as InfinityFree.
+ * Never commit config.local.php or put real credentials in this example file.
+ *
+ * Render/Aiven ignores this file when environment variables are configured,
+ * because environment variables take precedence over local values.
+ */
+return [
+    'APP_NAME' => 'Tourism MS',
+    'APP_URL' => 'https://your-site.example',
+
+    'DB_HOST' => 'sqlXXX.epizy.com',
+    'DB_PORT' => '3306',
+    'DB_NAME' => 'if0_XXXXXXXX_tourism',
+    'DB_USER' => 'if0_XXXXXXXX',
+    'DB_PASS' => 'CHANGE_THIS_PASSWORD',
+
+    // InfinityFree MySQL does not use the Aiven CA certificate.
+    'DB_SSL_CA' => '',
+    'DB_SSL_VERIFY' => 'false',
+
+    'ADMIN_USERNAME' => 'CHANGE_THIS_ADMIN_USERNAME',
+    'ADMIN_PASSWORD' => 'CHANGE_THIS_ADMIN_PASSWORD',
+];

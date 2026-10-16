@@ -133,6 +133,11 @@ For a Render Docker web service backed by Aiven MySQL, follow
 Aiven TLS, schema import, Render environment variables, health checks, and the
 fact that Render's local filesystem is not persistent for uploaded images.
 
+For a traditional PHP/MySQL upload to InfinityFree, follow
+[docs/DEPLOYMENT_INFINITYFREE.md](docs/DEPLOYMENT_INFINITYFREE.md). It uses a
+server-only local configuration file while preserving the Render/Aiven
+environment-variable deployment.
+
 ## 📁 Project Structure
 
 ```

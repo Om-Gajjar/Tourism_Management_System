@@ -6,9 +6,6 @@
 # Disable directory browsing
 Options -Indexes
 
-# Follow symbolic links (required for mod_rewrite)
-Options +FollowSymLinks
-
 # Enable Rewrite Engine
 <IfModule mod_rewrite.c>
     RewriteEngine On
